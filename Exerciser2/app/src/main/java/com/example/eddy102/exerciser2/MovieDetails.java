@@ -33,6 +33,6 @@ public class MovieDetails extends AppCompatActivity {
         tvOverview.setText(intent.getExtras().getString("key_description"));
         tvOverview.setMovementMethod(new ScrollingMovementMethod());
         float score = Float.parseFloat(intent.getExtras().getString("key_voteAvarage"));
-        rtBar.setRating((score*5)/10);
+        rtBar.setRating(score/2);
     }
 }

@@ -7,11 +7,12 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
-import java.lang.reflect.Type;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     ArrayList<MovieObject> movies;
@@ -24,12 +25,22 @@ public class MainActivity extends AppCompatActivity {
         RecyclerView recyclerView = findViewById(R.id.recycleView);
 
         //Transform from json to POJOs
-        Gson gson = new Gson();
-        Type listType = new TypeToken<List<MovieObject>>(){}.getType();
-        List<MovieObject> movie = (List<MovieObject>) gson.fromJson(MyApp.msgMovie, listType);
+        try {
+            JSONObject jsonObject = new JSONObject(MyApp.msgMovie);
+            JSONArray jsonArray = jsonObject.getJSONArray("results");
+            movies = new ArrayList<>();
+            Gson gson = new Gson();
+            for (int i = 0; i<jsonArray.length();i++){
+                JSONObject finalObject = jsonArray.getJSONObject(i);
+                MovieObject movie = gson.fromJson(finalObject.toString(),MovieObject.class);
+                movies.add(movie);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
         //Create adapter to recycleView
-        MovieAdapter movieAdapter = new MovieAdapter(movie,this);
+        MovieAdapter movieAdapter = new MovieAdapter(movies,this);
         recyclerView.setAdapter(movieAdapter);
 
         //Set LayoutManager for View

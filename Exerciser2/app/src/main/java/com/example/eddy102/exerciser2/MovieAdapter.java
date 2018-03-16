@@ -65,7 +65,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
         Picasso.with(context).load("http://image.tmdb.org/t/p/w500/"
                 + moviesTemp.getPosterPath()).into(imgPoster);
         ImageView imgButtonPlay = viewHolder.btnPlay;
-        if (moviesTemp.isVideo(moviesTemp.getVideo())) {
+        if (!moviesTemp.isVideo(moviesTemp.getVideo())) {
             imgButtonPlay.setVisibility(View.INVISIBLE);
         } else {
             imgButtonPlay.setBackgroundResource(R.drawable.play);
